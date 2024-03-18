@@ -2,7 +2,17 @@
 
 /* Configurando as cores padrões do projeto */
 
-/* Desta forma nós conseguimos usar  o nome ali escrito como uma 'Variavel'  que possui o Hexa da cor desejada! */
+/*
+  Desta forma nós conseguimos usar  o nome ali escrito como uma 'Variavel'  que possui o Hexa da cor desejada!
+
+*/
+
+/*
+
+O Seletor ':root' é um seletor global e o mais potente do seu documento, nós usamos ele para definir valores globais para o projeto todo
+  Como por exemplo, as cores que serão utilizadas!
+
+*/
 
 :root{
   --dark-grey: #333333;
