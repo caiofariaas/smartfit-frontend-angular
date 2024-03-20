@@ -1,41 +1,53 @@
 import { Component, NgModule } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule,  } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { GetUnitsService } from '../../services/get-units.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-
+import { HttpClientModule } from '@angular/common/http';
+import { Location } from 'src/app/types/location.interface';
 
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule, ],
+  imports: [ReactiveFormsModule, HttpClientModule],
   templateUrl: './forms.component.html',
-  styleUrls: ['./forms.component.scss',]
+  styleUrls: ['./forms.component.scss'],
 })
-
 export class FormsComponent {
+  results: Location[] = [];
+  filteredResults: Location[] = [];
 
-  results = [];
   formGroup!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private unitService: GetUnitsService){ }
+  constructor(
+    private formBuilder: FormBuilder,
+    private unitService: GetUnitsService
+  ) {}
 
-    ngOnInit(): void{
-        this.unitService.getAllUnits().subscribe(data => console.log(data));
-        this.formGroup = this.formBuilder.group({
-          hour: '',
-          showClosed: false,
-        })
+  ngOnInit(): void {
+    this.formGroup = this.formBuilder.group({
+      hour: '',
+      showClosed: true,
+    });
+
+    this.unitService.getAllUnits().subscribe((data) => {
+      this.results = data.locations;
+      this.filteredResults = data.locations;
+    });
+  }
+
+  /* Função para pegar os valores do formulário */
+
+  onSubmit(): void {
+    if(!this.formGroup.value.showClosed){
+      this.filteredResults = this.results.filter(location => location.opened === true)
     }
-
-    /* Função para pegar os valores do formulário */
-
-    onSubmit(): void{
-      console.log(this.formGroup.value)
+    else{
+      this.filteredResults = this.results;
     }
+  }
 
-    /* Função que limpa os filtros */
+  /* Função que limpa os filtros */
 
-    onClean(): void{
-      this.formGroup.reset()
-    }
+  onClean(): void {
+    this.formGroup.reset();
+  }
 }
