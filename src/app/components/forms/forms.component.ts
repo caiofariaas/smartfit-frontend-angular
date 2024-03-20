@@ -9,7 +9,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [ReactiveFormsModule, HttpClientModule, ],
   templateUrl: './forms.component.html',
-  styleUrl: './forms.component.scss'
+  styleUrls: ['./forms.component.scss',]
 })
 
 export class FormsComponent {
