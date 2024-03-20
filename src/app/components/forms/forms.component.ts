@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { GetUnitsService } from '../../services/get-units.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Location } from 'src/app/types/location.interface';
+import { FilterUnitsService } from 'src/app/services/filter-units.service';
 
 @Component({
   selector: 'app-forms',
@@ -19,7 +20,8 @@ export class FormsComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private unitService: GetUnitsService
+    private unitService: GetUnitsService,
+    private filterUnitsService: FilterUnitsService,
   ) {}
 
   ngOnInit(): void {
@@ -37,12 +39,9 @@ export class FormsComponent {
   /* Função para pegar os valores do formulário */
 
   onSubmit(): void {
-    if(!this.formGroup.value.showClosed){
-      this.filteredResults = this.results.filter(location => location.opened === true)
-    }
-    else{
-      this.filteredResults = this.results;
-    }
+    let {showClosed, hour} = this.formGroup.value
+
+    this.filteredResults = this.filterUnitsService.filter(this.results, showClosed, hour)
   }
 
   /* Função que limpa os filtros */
